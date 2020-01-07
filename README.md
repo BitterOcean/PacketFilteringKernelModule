@@ -6,9 +6,7 @@ Author : Maryam Saeedmehr
 
 Language : C
 
-
-# **install**
-## Step0 : Cloning
+## Cloning
 
 First of All Clone the Project : 
 
@@ -19,18 +17,28 @@ $ git clone https://github.com/MaryamSaeedmehr/PacketFilteringKernelModule.git
 ## Building & Cleaning Module
 
 - To build this module, type:
-`make`
+```shell
+$ make
+```
 - To clean up the module, type:
-`make clean`
+```shell
+$ make clean
+```
 
 ## Loading & Unloading Module
 
 - To install the module, type:
-`sudo insmod simple_firewall.ko`
+```shell
+$ sudo insmod simple_firewall.ko
+```
 - To remove the module, type:
-`sudo rmmod simple_firewall`
+```shell
+$ sudo rmmod simple_firewall
+```
 - To verify the module is actually loaded or unloaded, type:
-`dmesg | tail`
+```shell
+$ dmesg | tail
+```
 
 ## Module Information
 
