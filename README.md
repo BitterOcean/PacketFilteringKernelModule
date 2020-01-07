@@ -29,11 +29,11 @@ $ make clean
 
 - To install the module, type:
 ```shell
-$ sudo insmod simple_firewall.ko
+$ sudo insmod packetfiltering.ko
 ```
 - To remove the module, type:
 ```shell
-$ sudo rmmod simple_firewall
+$ sudo rmmod packetfiltering
 ```
 - To verify the module is actually loaded or unloaded, type:
 ```shell
