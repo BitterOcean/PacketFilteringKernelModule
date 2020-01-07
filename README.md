@@ -68,12 +68,9 @@ Netfilter is a packet filtering subsystem in the Linux kernel stack and has been
 [*]  Network Stack
 ```
 
-Our hook function will return one of the following codes:-
+Our hook function will return one of the following codes:
 1. NF_ACCEPT: accept the packet (continue network stack trip)
 2. NF_DROP: drop the packet (don't continue trip)
-3. NF_REPEAT: repeat the hook function
-4. NF_STOLEN: hook steals the packet (don't continue trip)
-5. NF_QUEUE: queue the packet to userspace
 
 After we write our hook function, we have to register its options with the nf_hook_ops struct located in linux/netfilter.h.
 ```
