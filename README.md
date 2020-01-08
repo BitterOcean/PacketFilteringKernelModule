@@ -29,11 +29,11 @@ $ make clean
 
 - To install the module, type:
 ```shell
-$ sudo insmod packetfiltering.ko
+$ sudo insmod PacketFilteringKM.ko
 ```
 - To remove the module, type:
 ```shell
-$ sudo rmmod packetfiltering
+$ sudo rmmod PacketFilteringKM
 ```
 - To verify the module is actually loaded or unloaded, type:
 ```shell
