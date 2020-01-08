@@ -39,6 +39,10 @@ $ sudo rmmod PacketFilteringKM
 ```shell
 $ dmesg | tail
 ```
+- To run the App_pktfltr
+```shell
+$ sudo ./App_pktfltr
+```
 
 ## Module Information
 
