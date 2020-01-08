@@ -6,7 +6,7 @@ Author : Maryam Saeedmehr
 
 Language : C
 
-## Cloning
+## **Cloning**
 
 First of All Clone the Project : 
 
@@ -14,7 +14,7 @@ First of All Clone the Project :
 $ git clone https://github.com/MaryamSaeedmehr/PacketFilteringKernelModule.git
 ```
 
-## Building & Cleaning Module
+## **Building & Cleaning Module**
 
 - To build this module, type:
 ```shell
@@ -25,7 +25,7 @@ $ make
 $ make clean
 ```
 
-## Loading & Unloading Module
+## **Loading & Unloading Module**
 
 - To install the module, type:
 ```shell
@@ -44,12 +44,12 @@ $ dmesg | tail
 $ sudo ./App_pktfltr
 ```
 
-## Module Information
+## **Module Information**
 
 - Module to Get Rules from User
 - Just read : <a href="https://github.com/MaryamSaeedmehr/PacketFilteringKernelModule/blob/master/PacketFilteringDocumentation.pdf">`/PacketFilteringDocumentation.pdf`</a>
 
-## Theory
+## **Theory**
 
 Netfilter is a packet filtering subsystem in the Linux kernel stack and has been there since kernel 2.4.x. Netfilter's core consists of five hook functions declared in linux/netfilter_ipv4.h. Although these functions are for IPv4, they aren't much different from those used in the IPv6 counterpart. The hooks are used to analyze packets in various locations on the network stack. This situation is depicted below:
 ```
@@ -97,12 +97,12 @@ struct nf_hook_ops
 The rest of the code is pretty self explanatory. In-line comments are provided for assistance.
 
 
-# **Enjoy It**
+## **Enjoy It**
 
 ![PacketFilteringKM](https://user-images.githubusercontent.com/49061503/71977958-65bda300-322f-11ea-8dfb-f38a827d7895.gif)
 
 
-# **Files**
+## **Files**
 
 - <a href="https://github.com/MaryamSaeedmehr/PacketFilteringKernelModule/blob/master/App_PacketFiltering.c">`/App_PacketFiltering.c`</a> : This is an application interfacing user and module( user mood and kernel mood )
 - <a href="https://github.com/MaryamSaeedmehr/PacketFilteringKernelModule/blob/master/Makefile">`/Makefile`</a> : This file is used to make or clean the codes
