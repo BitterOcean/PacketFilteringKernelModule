@@ -22,7 +22,8 @@
 #include <linux/icmp.h>
 #include <linux/ip.h>
 #include <linux/inet.h>
-#include <linux/time.h>
+#include <linux/ktime.h>
+#include <linux/timekeeping.h>
 
 #define  DEVICE_NAME "packetfilter" ///< The device will appear at /dev/ebbchar using this value
 #define  CLASS_NAME  "pktfltr" ///< The device class -- this is a character device driver
@@ -111,7 +112,7 @@ static int __init packet_filter_init(void)
     printk(KERN_INFO "Network registered correctly\n");
     if(packetFilterNet)
     {
-        printk(KERN_ALERT"Faild to register a record in netfilter\n");
+        printk(KERN_ALERT "Failu to register a record in netfilter\n");
         class_destroy(packetFilterClass);// Repeated code but the alternative is goto statements
         unregister_chrdev(majorNumber, DEVICE_NAME);
         device_destroy(packetFilterClass, MKDEV(majorNumber, 0));// remove the device
@@ -177,8 +178,8 @@ unsigned int packet_hook(unsigned int hooknum,
     char source_string[16], tmp[20];
     unsigned int source_port;
     unsigned int source_address;
-    struct timespec curr_tm;
-    getnstimeofday(&curr_tm);
+    struct timespec64 curr_tm;
+    ktime_get_real_ts64(&curr_tm);
     printk(KERN_INFO "PACKET in packet hook");
     sock_buff = skb;
     ip_header = (struct iphdr *)skb_network_header(sock_buff);
@@ -209,7 +210,7 @@ unsigned int packet_hook(unsigned int hooknum,
             {
                 if (flag)
                 {
-                    printk(KERN_INFO"(TIME: %.2lu:%.2lu:%.2lu:%.6lu) Got a new Packet and accepted it due to being in whitelist\n",
+                    printk(KERN_INFO "(TIME: %.2lu:%.2lu:%.2lu:%.6lu) Got a new Packet and accepted it due to being in whitelist\n",
                                       (curr_tm.tv_sec / 3600) % (24),
                                       (curr_tm.tv_sec / 60) % (60),
                                       (curr_tm.tv_sec) % 60,
@@ -218,7 +219,7 @@ unsigned int packet_hook(unsigned int hooknum,
                 }
                 else
                 {
-                    printk(KERN_INFO"(TIME: %.2lu:%.2lu:%.2lu:%.6lu) Got a new Packet and dropped it due to not being in whitelist\n",
+                    printk(KERN_INFO "(TIME: %.2lu:%.2lu:%.2lu:%.6lu) Got a new Packet and dropped it due to not being in whitelist\n",
                                       (curr_tm.tv_sec / 3600) % (24),
                                       (curr_tm.tv_sec / 60) % (60),
                                       (curr_tm.tv_sec) % 60,
@@ -230,7 +231,7 @@ unsigned int packet_hook(unsigned int hooknum,
             {
                 if(flag)
                 {
-                    printk(KERN_INFO"(TIME: %.2lu:%.2lu:%.2lu:%.6lu) Got a new Packet and dropped it duo to being in blacklist\n",
+                    printk(KERN_INFO "(TIME: %.2lu:%.2lu:%.2lu:%.6lu) Got a new Packet and dropped it duo to being in blacklist\n",
                                       (curr_tm.tv_sec / 3600) % (24),
                                       (curr_tm.tv_sec / 60) % (60),
                                       (curr_tm.tv_sec) % 60,
@@ -239,7 +240,7 @@ unsigned int packet_hook(unsigned int hooknum,
                 }
                 else
                 {
-                    printk(KERN_INFO"(TIME: %.2lu:%.2lu:%.2lu:%.6lu) Got a new Packet and accepted it duo to not being in blacklist\n",
+                    printk(KERN_INFO "(TIME: %.2lu:%.2lu:%.2lu:%.6lu) Got a new Packet and accepted it duo to not being in blacklist\n",
                                       (curr_tm.tv_sec / 3600) % (24),
                                       (curr_tm.tv_sec / 60) % (60),
                                       (curr_tm.tv_sec) % 60,
@@ -250,7 +251,7 @@ unsigned int packet_hook(unsigned int hooknum,
         }
         else
         {
-            printk(KERN_INFO"(TIME: %.2lu:%.2lu:%.2lu:%.6lu) Got a new Packet and accepted it due to no list!\n",
+            printk(KERN_INFO "(TIME: %.2lu:%.2lu:%.2lu:%.6lu) Got a new Packet and accepted it due to no list!\n",
                               (curr_tm.tv_sec / 3600) % (24),
                               (curr_tm.tv_sec / 60) % (60),
                               (curr_tm.tv_sec) % 60,
@@ -282,7 +283,7 @@ unsigned int packet_hook(unsigned int hooknum,
             {
                 if (flag)
                 {
-                    printk(KERN_INFO"(TIME: %.2lu:%.2lu:%.2lu:%.6lu) Got a new Packet and accepted it due to being in whitelist\n",
+                    printk(KERN_INFO "(TIME: %.2lu:%.2lu:%.2lu:%.6lu) Got a new Packet and accepted it due to being in whitelist\n",
                                       (curr_tm.tv_sec / 3600) % (24),
                                       (curr_tm.tv_sec / 60) % (60),
                                       (curr_tm.tv_sec) % 60,
@@ -291,7 +292,7 @@ unsigned int packet_hook(unsigned int hooknum,
                 }
                 else
                 {
-                    printk(KERN_INFO"(TIME: %.2lu:%.2lu:%.2lu:%.6lu) Got a new Packet and dropped it due to not being in whitelist\n",
+                    printk(KERN_INFO "(TIME: %.2lu:%.2lu:%.2lu:%.6lu) Got a new Packet and dropped it due to not being in whitelist\n",
                                       (curr_tm.tv_sec / 3600) % (24),
                                       (curr_tm.tv_sec / 60) % (60),
                                       (curr_tm.tv_sec) % 60,
@@ -303,7 +304,7 @@ unsigned int packet_hook(unsigned int hooknum,
             {
                 if(flag)
                 {
-                    printk(KERN_INFO"(TIME: %.2lu:%.2lu:%.2lu:%.6lu) Got a new Packet and dropped it duo to being in blacklist\n",
+                    printk(KERN_INFO "(TIME: %.2lu:%.2lu:%.2lu:%.6lu) Got a new Packet and dropped it duo to being in blacklist\n",
                                       (curr_tm.tv_sec / 3600) % (24),
                                       (curr_tm.tv_sec / 60) % (60),
                                       (curr_tm.tv_sec) % 60,
@@ -312,18 +313,19 @@ unsigned int packet_hook(unsigned int hooknum,
                 }
                 else
                 {
-                    printk(KERN_INFO"(TIME: %.2lu:%.2lu:%.2lu:%.6lu) Got a new Packet and accepted it duo to not being in blacklist\n",
+                    printk(KERN_INFO "(TIME: %.2lu:%.2lu:%.2lu:%.6lu) Got a new Packet and accepted it duo to not being in blacklist\n",
                                       (curr_tm.tv_sec / 3600) % (24),
                                       (curr_tm.tv_sec / 60) % (60),
                                       (curr_tm.tv_sec) % 60,
                                       (curr_tm.tv_nsec) / 1000);
+
                     return NF_ACCEPT;
                 }
             }
         }
         else
         {
-            printk(KERN_INFO"(TIME: %.2lu:%.2lu:%.2lu:%.6lu) Got a new Packet and accepted it due to no list!\n",
+            printk(KERN_INFO "(TIME: %.2lu:%.2lu:%.2lu:%.6lu) Got a new Packet and accepted it due to no list!\n",
                               (curr_tm.tv_sec / 3600) % (24),
                               (curr_tm.tv_sec / 60) % (60),
                               (curr_tm.tv_sec) % 60,
@@ -334,7 +336,7 @@ unsigned int packet_hook(unsigned int hooknum,
 
     if(!sock_buff)
     {
-        printk(KERN_INFO"(TIME: %.2lu:%.2lu:%.2lu:%.6lu) Got a new Packet and dropped it due to that if\n",
+        printk(KERN_INFO "(TIME: %.2lu:%.2lu:%.2lu:%.6lu) Got a new Packet and dropped it due to that if\n",
                           (curr_tm.tv_sec / 3600) % (24),
                           (curr_tm.tv_sec / 60) % (60),
                           (curr_tm.tv_sec) % 60,
@@ -342,7 +344,7 @@ unsigned int packet_hook(unsigned int hooknum,
         return NF_DROP;
     }
 
-    printk(KERN_INFO"(TIME: %.2lu:%.2lu:%.2lu:%.6lu) Got a new Packet and accepted it due to that idk\n",
+    printk(KERN_INFO "(TIME: %.2lu:%.2lu:%.2lu:%.6lu) Got a new Packet and accepted it due to that idk\n",
                       (curr_tm.tv_sec / 3600) % (24),
                       (curr_tm.tv_sec / 60) % (60),
                       (curr_tm.tv_sec) % 60,
